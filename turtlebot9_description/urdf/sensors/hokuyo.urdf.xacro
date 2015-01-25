@@ -24,7 +24,7 @@
    </inertial>
  </link>
  <joint name="hokuyo_joint" type="fixed">
-   <origin xyz="0.132 0.0 0.13" rpy="3.14 0 0"/>
+   <origin xyz="0.131 0.0 0.142" rpy="3.14 0 0"/>
    <parent link="${parent}"/>
    <child link="laser_joint"/>
  </joint>

@@ -47,7 +47,7 @@
     </joint>
     <link name="pole_middle_${number}_link">
       <visual>
-        <origin xyz="0 0 0" rpy="0 ${M_PI} 0"/>
+        <origin xyz="0 0 0" rpy="${M_PI} ${M_PI} 0"/>
         <geometry>
           <mesh filename="package://turtlebot_description/meshes/stacks/hexagons/pole_middle.dae"/>
         </geometry>
@@ -126,7 +126,7 @@
       </inertial>
     </link>
   </xacro:macro>
-  
+
   <!-- 
     Stack macro - all the components relative transforms are made with respect 
     to the parent link (usually base_link). They could be made relative to each
@@ -144,7 +144,7 @@
 <!--
       <origin xyz="0.02364 0.0 0.1307" rpy="0 0 0"/>
 -->
-      <origin xyz="0.02364 0.0 0.1507" rpy="0 0 0"/>
+      <origin xyz="0.02364 0.0 0.1807" rpy="0 0 0"/>
       <parent link="${parent}"/>
       <child link="plate_bottom_link"/>
     </joint>  
@@ -170,11 +170,17 @@
       </inertial>
     </link>
     
-    <stack_middle_pole parent="${parent}" number="0" x_loc= "0.0381" y_loc= "0.1505" z_loc="0.1640"/>
-    <stack_middle_pole parent="${parent}" number="1" x_loc= "0.0381" y_loc="-0.1505" z_loc="0.1640"/>
-    <stack_middle_pole parent="${parent}" number="2" x_loc="-0.0381" y_loc= "0.1505" z_loc="0.1640"/>
-    <stack_middle_pole parent="${parent}" number="3" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.1640"/>
+    <stack_middle_pole parent="${parent}" number="0" x_loc= "0.120" y_loc= "0.082" z_loc="0.1480"/>
+    <stack_middle_pole parent="${parent}" number="1" x_loc= "0.055" y_loc= "0.120" z_loc="0.1480"/>
+    <stack_middle_pole parent="${parent}" number="2" x_loc="-0.055" y_loc= "0.120" z_loc="0.1480"/>
+    <stack_middle_pole parent="${parent}" number="3" x_loc="0.120" y_loc= "-0.082" z_loc="0.1480"/>
+    <stack_middle_pole parent="${parent}" number="4" x_loc="0.055" y_loc="-0.120" z_loc="0.1480"/>
+    <stack_middle_pole parent="${parent}" number="5" x_loc="-0.055" y_loc="-0.120" z_loc="0.1480"/>
+    <stack_middle_pole parent="${parent}" number="6" x_loc="0.11" y_loc="0.098" z_loc="	0.202"/>
+    <stack_middle_pole parent="${parent}" number="7" x_loc="0.11" y_loc="-0.098" z_loc="0.202"/>
+
     
+<!--
     <joint name="plate_middle_joint" type="fixed">
       <origin xyz="-0.01364 0.0 0.1874" rpy="0 0 0"/>
       <parent link="${parent}"/>
@@ -201,16 +207,17 @@
                  izz="0.01" />
       </inertial>  
     </link>
-    
-    <stack_top_pole parent="${parent}" number="0" x_loc= "0.0381" y_loc= "0.1505" z_loc="0.2920"/>
-    <stack_top_pole parent="${parent}" number="1" x_loc= "0.0381" y_loc="-0.1505" z_loc="0.2920"/>
-    <stack_top_pole parent="${parent}" number="2" x_loc="-0.0381" y_loc= "0.1505" z_loc="0.2920"/>
-    <stack_top_pole parent="${parent}" number="3" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.2920"/>
-    <stack_3d_sensor_pole parent="${parent}" number="0" x_loc="-0.1024" y_loc= "0.098" z_loc="0.2372"/>
-    <stack_3d_sensor_pole parent="${parent}" number="1" x_loc="-0.1024" y_loc="-0.098" z_loc="0.2372"/>
+-->
+
+    <stack_top_pole parent="${parent}" number="0" x_loc= "0.0381" y_loc= "0.1505" z_loc="0.2840"/>
+    <stack_top_pole parent="${parent}" number="1" x_loc= "0.0381" y_loc="-0.1505" z_loc="0.2840"/>
+    <stack_top_pole parent="${parent}" number="2" x_loc="-0.0381" y_loc= "0.1505" z_loc="0.2840"/>
+    <stack_top_pole parent="${parent}" number="3" x_loc="-0.0381" y_loc="-0.1505" z_loc="0.2840"/>
+    <stack_3d_sensor_pole parent="${parent}" number="0" x_loc="0.11" y_loc= "0.098" z_loc="0.2792"/>
+    <stack_3d_sensor_pole parent="${parent}" number="1" x_loc="0.11" y_loc="-0.098" z_loc="0.2792"/>
     
     <joint name="plate_top_joint" type="fixed">
-      <origin xyz="-0.01364 0.0  0.3966" rpy="0 0 0"/>
+      <origin xyz="-0.01364 0.0  0.3886" rpy="0 0 0"/> 
       <parent link="${parent}"/>
       <child link="plate_top_link"/>
     </joint>  
