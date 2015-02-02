@@ -9,8 +9,8 @@
     <remap from="~output" to="/z_filtered" />
     <rosparam>
       filter_field_name: z
-      filter_limit_min: 0.3
-      filter_limit_max: 1.6
+      filter_limit_min: 0.1
+      filter_limit_max: 1.4
       filter_limit_negative: False
       leaf_size: 0.01
     </rosparam>
@@ -44,7 +44,7 @@
     <remap from="point_cloud" to="search_cloud" />
     
     <rosparam>
-       goal_z: 0.8
+       goal_z: 0.5
        z_threshold: 0.05
        x_threshold: 0.025
        z_scale: 2.0
