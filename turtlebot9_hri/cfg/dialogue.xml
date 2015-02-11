@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<grammar xmlns="http://www.w3.org/2001/06/grammar"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.w3.org/2001/06/grammar
+                             http://www.w3.org/TR/speech-grammar/grammar.xsd"
+         xml:lang="jp"
+         version="1.0" mode="voice" root="command">
+  <lexicon uri="dialogue-lex-jp.xml"/>
+  <rule id="command">
+    <one-of>
+      <item repeat="0-1">いれいさー</item>
+    </one-of>
+    <one-of>
+      <item>おはよう</item>
+      <item>こんにちは</item>
+      <item>さようなら</item>
+      <item>いまなんじ</item>
+      <item>た</item> <!-- 雑音を無視するための無意味な単語 -->
+      <item>つ</item> <!-- 雑音を無視するための無意味な単語 -->
+    </one-of>
+  </rule>
+  <rule id="command2">
+    <item repeat="0-1">その</item>
+    <one-of>
+      <item>りんご</item>
+      <item>ケーキ</item>
+      <item>リモコン</item>
+      <item>くるま</item>
+      <item>ひこうき</item>
+    </one-of>
+    <item>を</item>
+    <one-of>
+      <item>取って</item>
+      <item>渡して</item>
+    </one-of>
+    <item repeat="0-1">ください</item>
+  </rule>
+</grammar>
+

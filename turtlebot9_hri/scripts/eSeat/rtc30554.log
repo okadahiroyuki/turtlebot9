@@ -1,0 +1,32 @@
+2015-02-11 14:22:06,318 manager INFO 1.1.0
+2015-02-11 14:22:06,319 manager INFO Copyright (C) 2003-2010
+2015-02-11 14:22:06,319 manager INFO   Noriaki Ando
+2015-02-11 14:22:06,319 manager INFO   Intelligent Systems Research Institute, AIST
+2015-02-11 14:22:06,319 manager INFO Manager starting.
+2015-02-11 14:22:06,319 manager INFO Starting local logging.
+2015-02-11 14:22:06,321 manager.namingmanager INFO NameServer connection succeeded: corba/localhost
+2015-02-11 14:22:06,325 ManagerServant INFO Master manager not found
+2015-02-11 14:22:06,325 manager WARNING Traceback (most recent call last):
+  File "/usr/lib/python2.7/dist-packages/OpenRTM_aist/Manager.py", line 1900, in initManagerServant
+    reffile = file(self._config.getProperty("manager.refstring_path"),'w')
+IOError: [Errno 13] Permission denied: '/var/log/rtcmanager.ref'
+
+2015-02-11 14:22:06,326 LocalServiceAdmin INFO All the local services are enabled.
+2015-02-11 14:22:06,331 ec_base INFO setRate(1000000.000000) done
+2015-02-11 14:22:06,331 ec_base INFO setRate(1000.000000) done
+2015-02-11 14:22:06,332 rtobject INFO 1 execution context was created.
+2015-02-11 14:22:06,332 eSEAT0 INFO eSEAT (Extended Simple Event Action Transfer) version 0.2
+2015-02-11 14:22:06,332 eSEAT0 INFO Copyright (C) 2009-2014 Yosuke Matsusaka and Isao Hara
+2015-02-11 14:22:06,332 rtobject INFO Initial active configuration set is default.
+2015-02-11 14:22:06,333 eSEAT0 INFO Start loadSEATML:/home/roboworks/catkin_ws/src/turtlebot9/turtlebot9_hri/cfg/dialogue.seatml
+2015-02-11 14:22:06,334 eSEAT0 INFO load script file: /home/roboworks/catkin_ws/src/turtlebot9/turtlebot9_hri/cfg/dialogue.seatml
+2015-02-11 14:22:06,334 eSEAT0 INFO create adaptor: rtcin: speechin
+2015-02-11 14:22:06,334 eSEAT0 INFO create inport: speechin
+2015-02-11 14:22:06,336 eSEAT0 INFO create adaptor: rtcout: speechout
+2015-02-11 14:22:06,336 eSEAT0 INFO create outport: speechout
+2015-02-11 14:22:06,338 eSEAT0 INFO register key=OPEN:speechin:こんにちは
+2015-02-11 14:22:06,338 eSEAT0 INFO register key=OPEN:speechin:さようなら
+2015-02-11 14:22:06,338 eSEAT0 INFO current state OPEN
+2015-02-11 14:22:06,338 eSEAT0 INFO loaded successfully
+2015-02-11 14:22:20,732 ec_worker WARNING ExecutionContext is already stopped.
+2015-02-11 14:22:20,733 ec_base ERROR Invoking on_shutdown() for each RTC failed.

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seatml>
+  <general name="sample">
+    <adaptor name="speechin" type="rtcin" datatype="TimedString" />
+    <adaptor name="speechout" type="rtcout" datatype="TimedString" />
+  </general>
+
+  <state name="OPEN">
+    <rule>
+      <key source="speechin">こんにちは</key>
+      <message sendto="speechout">ハロー</message>
+    </rule>
+    <rule>
+      <key source="speechin">さようなら</key>
+      <message sendto="speechout">バイバイ</message>
+    </rule>
+  </state>
+</seatml>
