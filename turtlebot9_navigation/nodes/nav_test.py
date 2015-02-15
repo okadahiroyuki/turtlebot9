@@ -1,35 +1,15 @@
 #!/usr/bin/env python
-
-""" nav_test.py - Version 1.1 2013-12-20
-
-    Command a robot to move autonomously among a number of goal locations defined in the map frame.
-    On each round, select a new random sequence of locations, then attempt to move to each location
-    in succession.  Keep track of success rate, time elapsed, and total distance traveled.
-
-    Created for the Pi Robot Project: http://www.pirobot.org
-    Copyright (c) 2012 Patrick Goebel.  All rights reserved.
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.5
-    
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details at:
-    
-    http://www.gnu.org/licenses/gpl.html
-      
-"""
-
 import rospy
 import actionlib
+import tf
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from random import sample
 from math import pow, sqrt
+from nav_msgs.msg import Odometry
+from std_msgs.msg import String
+
 
 class NavTest():
     def __init__(self):
@@ -39,6 +19,24 @@ class NavTest():
         
         # How long in seconds should the robot pause at each location?
         self.rest_time = rospy.get_param("~rest_time", 10)
+
+
+
+
+
+        # Initialize the tf listener
+        self.tf_listener = tf.TransformListener()
+        # Set the odom frame
+        self.odom_frame = '/odom'
+
+        # Find out if the robot uses /base_link or /base_footprint
+        self.tf_listener.waitForTransform(self.odom_frame,'/base_footprint', rospy.Time(), rospy.Duration(1.0))
+
+        self.base_frame = '/base_footprint'
+        self.tf_listener.waitForTransform(self.odom_frame,'/base_footprint', rospy.Time(), rospy.Duration(1.0))
+
+        self.base_frame = '/base_link'
+
         
         # Are we running in the fake simulator?
         self.fake_test = rospy.get_param("~fake_test", False)
@@ -111,6 +109,8 @@ class NavTest():
         
         # Begin the main loop and run through a sequence of locations
         while not rospy.is_shutdown():
+            self.get_odom()
+
             # If we've gone through the current sequence,
             # start with a new random sequence
             if i == n_locations:
@@ -189,6 +189,19 @@ class NavTest():
             
     def update_initial_pose(self, initial_pose):
         self.initial_pose = initial_pose
+
+    def get_odom(self):
+      try:
+        (trans, rot) = self.tf_listener.lookupTransform(self.odom_frame,
+self.base_frame, rospy.Time(0))
+      except (tf.Exception, tf.ConnectivityException, tf.LookupException):
+        rospy.loginfo("TF Exception")
+        return
+
+      print trans
+      return
+
+
 
     def shutdown(self):
         rospy.loginfo("Stopping the robot...")

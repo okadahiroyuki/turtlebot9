@@ -21,10 +21,5 @@
   <!-- Fire up AMCL -->
   <include file="$(find trcp_navigation)/launch/tb_amcl.launch" />
   
-  <!-- Start the navigation test -->
-  <node pkg="trcp_navigation" type="nav_test.py" name="nav_test" output="screen">
-    <param name="rest_time" value="10" />
-    <param name="fake_test" value="false" />
-  </node>
 
 </launch>
