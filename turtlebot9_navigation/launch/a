@@ -1,0 +1,46 @@
+WARNING: Package name "trcp_OpenHRI" does not follow the naming conventions. It should start with a lower case letter and only contain lower case letters, digits and underscores.
+Traceback (most recent call last):
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/__init__.py", line 279, in main
+    p.start()
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/parent.py", line 257, in start
+    self._start_infrastructure()
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/parent.py", line 206, in _start_infrastructure
+    self._load_config()
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/parent.py", line 121, in _load_config
+    self.config = roslaunch.config.load_config_default(self.roslaunch_files, self.port, verbose=self.verbose)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/config.py", line 428, in load_config_default
+    loader.load(f, config, verbose=verbose)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 698, in load
+    self._load_launch(launch, ros_config, is_core=core, filename=filename, argv=argv, verbose=verbose)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 670, in _load_launch
+    self._recurse_load(ros_config, launch.childNodes, self.root_context, None, is_core, verbose)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 605, in _recurse_load
+    n = self._node_tag(tag, context.child(''), ros_config, default_machine, verbose=verbose)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 95, in call
+    return f(*args, **kwds)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 351, in _node_tag
+    self.opt_attrs(tag, context, ('machine', 'args', 'output', 'respawn', 'cwd', 'launch-prefix', 'required'))
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 178, in opt_attrs
+    return [self.resolve_args(tag_value(tag,a), context) for a in attrs]
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/xmlloader.py", line 159, in resolve_args
+    return substitution_args.resolve_args(args, context=context.resolve_dict, resolve_anon=self.resolve_anon)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/substitution_args.py", line 299, in resolve_args
+    resolved = _resolve_args(resolved, context, resolve_anon, commands)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/substitution_args.py", line 312, in _resolve_args
+    resolved = commands[command](resolved, a, args, context)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/substitution_args.py", line 137, in _find
+    return _find_executable(resolve_without_path, a, [args[0], path], context)
+  File "/opt/ros/hydro/lib/python2.7/dist-packages/roslaunch/substitution_args.py", line 173, in _find_executable
+    full_path = _get_executable_path(rp.get_path(args[0]), path)
+  File "/usr/lib/python2.7/dist-packages/rospkg/rospack.py", line 199, in get_path
+    raise ResourceNotFound(name, ros_paths=self._ros_paths)
+ResourceNotFound: turlebot9_navigation
+ROS path [0]=/opt/ros/hydro/share/ros
+ROS path [1]=/home/roboworks/catkin_ws/src
+ROS path [2]=/opt/ros/hydro/share
+ROS path [3]=/opt/ros/hydro/stacks
+... logging to /home/roboworks/.ros/log/346ded26-b66c-11e4-8bbd-84a6c8cdcd0f/roslaunch-M14xR2-11690.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/roboworks/catkin_ws/src/turtlebot9/turtlebot9_navigation/launch/tb_nav.launch
