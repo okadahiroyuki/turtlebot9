@@ -4,16 +4,25 @@ import actionlib
 import tf
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion, Twist
-from geometry_msgs.msg import * 
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from random import sample
 from math import pow, sqrt
+from nav_msgs.msg import Odometry
+from std_msgs.msg import String
+
 
 class NavTest():
     def __init__(self):
         rospy.init_node('nav_test', anonymous=True)
+        
         rospy.on_shutdown(self.shutdown)
         
+        # How long in seconds should the robot pause at each location?
+        self.rest_time = rospy.get_param("~rest_time", 10)
+
+
+
+
 
         # Initialize the tf listener
         self.tf_listener = tf.TransformListener()
@@ -28,18 +37,37 @@ class NavTest():
 
         self.base_frame = '/base_link'
 
-
-
-
-
+        
         # Are we running in the fake simulator?
-#        self.fake_test = rospy.get_param("~fake_test", False)
+        self.fake_test = rospy.get_param("~fake_test", False)
         
         # Goal state return values
         goal_states = ['PENDING', 'ACTIVE', 'PREEMPTED', 
                        'SUCCEEDED', 'ABORTED', 'REJECTED',
                        'PREEMPTING', 'RECALLING', 'RECALLED',
                        'LOST']
+        
+        # Set up the goal locations. Poses are defined in the map frame.  
+        # An easy way to find the pose coordinates is to point-and-click
+        # Nav Goals in RViz when running in the simulator.
+        # Pose coordinates are then displayed in the terminal
+        # that was used to launch RViz.
+        locations = dict()
+        
+#        locations['hall_foyer'] = Pose(Point(0.643, 4.720, 0.000), Quaternion(0.000, 0.000, 0.223, 0.975))
+#        locations['hall_kitchen'] = Pose(Point(-1.994, 4.382, 0.000), Quaternion(0.000, 0.000, -0.670, 0.743))
+#        locations['hall_bedroom'] = Pose(Point(-3.719, 4.401, 0.000), Quaternion(0.000, 0.000, 0.733, 0.680))
+#        locations['living_room_1'] = Pose(Point(0.720, 2.229, 0.000), Quaternion(0.000, 0.000, 0.786, 0.618))
+#        locations['living_room_2'] = Pose(Point(1.471, 1.007, 0.000), Quaternion(0.000, 0.000, 0.480, 0.877))
+#        locations['dining_room_1'] = Pose(Point(-0.861, -0.019, 0.000), Quaternion(0.000, 0.000, 0.892, -0.451))
+        locations['home'] = Pose(Point(0.0, 0.0, 0.0), Quaternion(0.000, 0.000, 0.0, 1.0))
+        locations['book_shelf'] = Pose(Point(5.046, -0.928, 0.0), Quaternion(0.000, 0.000, -0.707, 0.707))
+        locations['tv'] = Pose(Point(4.559, 1.719, 0.0), Quaternion(0.000, 0.000, 0.348, 0.937))
+        locations['kitchen_table'] = Pose(Point(1.106, 1.886, 0.0), Quaternion(0.000, 0.000, 1.0, 0.0))
+        locations['fridge'] = Pose(Point(0.586, -1.242, 0.0), Quaternion(0.000, 0.000, -0.707, 0.707))
+
+        # Publisher to manually control the robot (e.g. to stop it)
+        self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist)
         
         # Subscribe to the move_base action server
         self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
@@ -53,44 +81,40 @@ class NavTest():
         
         # A variable to hold the initial pose of the robot to be set by 
         # the user in RViz
-        #initial_pose = PoseWithCovarianceStamped()
+        initial_pose = PoseWithCovarianceStamped()
+        
+        # Variables to keep track of success rate, running time,
+        # and distance traveled
+        n_locations = len(locations)
+        n_goals = 0
+        n_successes = 0
+        i = n_locations
+        distance_traveled = 0
+        start_time = rospy.Time.now()
+        running_time = 0
+        location = ""
+        last_location = ""
         
         # Get the initial pose from the user
-        #rospy.loginfo("*** Click the 2D Pose Estimate button in RViz to set the robot's initial pose...")
-        #rospy.wait_for_message('initialpose', PoseWithCovarianceStamped)
-
-#        initial_pose = PoseWithCovarianceStamped()
- #	initial_pose.pose = Pose(Point(1.0, 0.0, 0.0), Quaternion(0.000, 0.000, 0.0, 1.0))
- #       rospy.Subscriber('initialpose', PoseWithCovarianceStamped, self.update_initial_pose)
-
-        pub = rospy.Publisher('initialpose', PoseWithCovarianceStamped)
-        #rospy.init_node('initial_pose'); #, log_level=roslib.msg.Log.INFO)
-        rospy.loginfo("Setting Pose")
-
-        p   = PoseWithCovarianceStamped();
-        msg = PoseWithCovariance();
-        msg.pose = Pose(Point(1.0, 0.0, 0.000), Quaternion(0.000, 0.000, 0.0, 1.0));
-        msg.covariance = [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942];
-        p.pose = msg;
-        pub.publish(p);
-
+        rospy.loginfo("*** Click the 2D Pose Estimate button in RViz to set the robot's initial pose...")
+        rospy.wait_for_message('initialpose', PoseWithCovarianceStamped)
+        self.last_location = Pose()
+        rospy.Subscriber('initialpose', PoseWithCovarianceStamped, self.update_initial_pose)
         
         # Make sure we have the initial pose
-        #while initial_pose.header.stamp == "":
-        #    rospy.sleep(1)
+        while initial_pose.header.stamp == "":
+            rospy.sleep(1)
             
         rospy.loginfo("Starting navigation test")
         
         # Begin the main loop and run through a sequence of locations
-#        while not rospy.is_shutdown():
-                        
+        self.get_odom()
+
         # Set up the next goal location
         self.goal = MoveBaseGoal()
-        self.goal.target_pose.pose = Pose(Point(1.0, 0.0, 0.000), Quaternion(0.000, 0.000, 0.0, 1.0))
- 
+        self.goal.target_pose.pose = locations['home']
         self.goal.target_pose.header.frame_id = 'map'
         self.goal.target_pose.header.stamp = rospy.Time.now()
-            
             
         # Start the robot toward the next location
         self.move_base.send_goal(self.goal)
@@ -108,22 +132,12 @@ class NavTest():
                 rospy.loginfo("Goal succeeded!")
                 rospy.loginfo("State:" + str(state))
             else:
-              rospy.loginfo("Goal failed with error code: " + str(goal_states[state]))
-        self.get_odom()
-          
+                rospy.loginfo("Goal failed with error code: " + str(goal_states[state]))
+            
+        rospy.sleep(self.rest_time)
             
     def update_initial_pose(self, initial_pose):
         self.initial_pose = initial_pose
-
-    def gen_pose():
-      pub = rospy.Publisher('initialpose', PoseWithCovarianceStamped)
-      rospy.init_node('initial_pose'); #, log_level=roslib.msg.Log.INFO)
-      rospy.loginfo("Setting Pose")
-
-      p   = PoseWithCovarianceStamped();
-      msg = PoseWithCovariance();
-      msg.pose = Pose(Point(-0.767, -0.953, 0.000), Quaternion(0.000, 0.000, -0.0149, 0.9999));
-
 
     def get_odom(self):
       try:
@@ -137,9 +151,19 @@ self.base_frame, rospy.Time(0))
       return
 
 
+
     def shutdown(self):
         rospy.loginfo("Stopping the robot...")
+        self.move_base.cancel_goal()
+        rospy.sleep(2)
+        self.cmd_vel_pub.publish(Twist())
+        rospy.sleep(1)
       
+def trunc(f, n):
+    # Truncates/pads a float f to n decimal places without rounding
+    slen = len('%.*f' % (n, f))
+    return float(str(f)[:slen])
+
 if __name__ == '__main__':
     try:
         NavTest()
