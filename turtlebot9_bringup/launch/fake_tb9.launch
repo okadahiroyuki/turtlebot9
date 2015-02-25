@@ -8,7 +8,7 @@
     
   <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
       <rosparam command="delete" param="/arbotix" />
-      <rosparam file="$(find trcp_bringup)/config/fake_turtlebot9_arbotix.yaml" command="load" />
+      <rosparam file="$(find turtlebot9_bringup)/config/fake_turtlebot9_arbotix.yaml" command="load" />
       <param name="sim" value="true"/>
   </node>
   

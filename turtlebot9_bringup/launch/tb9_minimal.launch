@@ -14,7 +14,7 @@
 
   <include file="$(find turtlebot9_bringup)/launch/includes/tb9_kobuki_mobile_base.launch.xml" />
 
-  <include file="$(find turtlebot9_bringup)/launch/includes/netbook.launch.xml">
+  <include file="$(find turtlebot_bringup)/launch/includes/netbook.launch.xml">
     <arg name="battery" value="$(arg battery)" />
   </include>
 

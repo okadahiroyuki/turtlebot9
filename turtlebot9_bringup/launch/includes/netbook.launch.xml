@@ -3,7 +3,7 @@
  -->
 <launch>
   <arg name="battery"/>
-  <node pkg="trcp_bringup" type="laptop_battery.py" name="turtlebot_laptop_battery">
+  <node pkg="turtlebot9_bringup" type="laptop_battery.py" name="turtlebot_laptop_battery">
         <param name="acpi_path" type="string" value="$(arg battery)" />
   </node>
 </launch>
