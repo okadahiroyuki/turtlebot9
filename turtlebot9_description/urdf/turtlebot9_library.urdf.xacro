@@ -17,4 +17,9 @@
   <xacro:include filename="$(find turtlebot9_description)/urdf/sensors/asus_xtion_pro.urdf.xacro"/>
   <xacro:include filename="$(find turtlebot9_description)/urdf/sensors/hokuyo.urdf.xacro"/>
 <!--  <xacro:include filename="$(find turtlebot_arm_description)/urdf/arm.urdf.xacro"/> -->
+   <include filename="$(find turtlebot_arm_description)/urdf/arm.xacro" />
+   <turtlebot_arm parent="plate_top_link" color="white" gripper_color="green"
+             joints_vlimit="1.571" pan_llimit="-2.617" pan_ulimit="2.617">
+      <origin xyz="0 0 1"/>
+    </turtlebot_arm>
 	</robot>

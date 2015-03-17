@@ -60,7 +60,7 @@ class NavTest():
         #rospy.wait_for_message('initialpose', PoseWithCovarianceStamped)
 
 #        initial_pose = PoseWithCovarianceStamped()
- #	initial_pose.pose = Pose(Point(1.0, 0.0, 0.0), Quaternion(0.000, 0.000, 0.0, 1.0))
+ #	initial_pose.pose = Pose(Point(0.0, 0.0, 0.0), Quaternion(0.000, 0.000, 0.0, 1.0))
  #       rospy.Subscriber('initialpose', PoseWithCovarianceStamped, self.update_initial_pose)
 
         pub = rospy.Publisher('initialpose', PoseWithCovarianceStamped)
@@ -69,7 +69,7 @@ class NavTest():
 
         p   = PoseWithCovarianceStamped();
         msg = PoseWithCovariance();
-        msg.pose = Pose(Point(1.0, 0.0, 0.000), Quaternion(0.000, 0.000, 0.0, 1.0));
+        msg.pose = Pose(Point(0.0, -1.0, 0.000), Quaternion(0.000, 0.000, 0.0, 1.0));
         msg.covariance = [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942];
         p.pose = msg;
         pub.publish(p);
