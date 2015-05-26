@@ -1,0 +1,22 @@
+<launch>
+  <!-- Launch the turtlebot2 -->
+  <include file="$(find turtlebot9_bringup)/launch/tb9_minimal.launch">
+  </include>
+
+  <!-- Launch the HOKUYO -->
+  <include file="$(find turtlebot9_bringup)/launch/hokuyo.launch">
+  </include>
+
+  <!-- Launch the Joystick -->
+  <include file="$(find turtlebot9_navigation)/launch/joystick_teleop.launch">
+  </include>
+
+
+  <!-- Launch the gmapping -->
+  <include file="$(find turtlebot9_navigation)/launch/gmapping.launch">
+  </include>
+
+
+  <!-- Launch the rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find turtlebot9_rviz_launchers)/rviz/gmapping.rviz"/>
+</launch>
